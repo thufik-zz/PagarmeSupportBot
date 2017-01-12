@@ -7,7 +7,7 @@ def remove_accents(input_str):
 
 
 
-r = requests.get('https://pagarme.zendesk.com/api/v2/views/52583723/tickets.json',auth=('fellipe.thufik@pagar.me','thufik19'))
+r = requests.get('https://pagarme.zendesk.com/api/v2/views/39073247/tickets.json',auth=('fellipe.thufik@pagar.me','thufik19'))
 
 jayson = json.loads(r.text)
 count = jayson['count']
@@ -17,59 +17,63 @@ count = jayson['count']
 if count > 0:
 
 	tickets = jayson['tickets']
-	file = open("newfile.txt","ar+") 
+	file = open("newfile.txt","r+b") 
 	readedFile = file.read()
 	newTickets = 0
 
 	for ticket in tickets:
 		if  not str(ticket['id']) in readedFile:
 			
-			x =  remove_accents(ticket['subject'])
-			print x
+			subject =  remove_accents(ticket['subject'])
+			description = remove_accents(ticket['description'])
 
 			file.write(str(ticket['id']) + ' ')
-			if bool(ticket['via']['source']['from']):
-				name = '<!here> New Ticket from {0}'.format(ticket['via']['source']['from']['name']) 
-			else:
-				name = '<!here> New ticket on queue'
+			#if ticket.get('via').get('source').get('from'):
+			#	name = '<!here> New Ticket from {0}'.format(ticket['via']['source']['from']['name']) 
+			#else:
+			#
+			name = '<!here> New ticket on queue'
 
 			dic = {
-				"token" : "xoxp-2465752868-87168214994-124135080481-9c2f8f0ce5fa52664403fe521dcb4e97",
 				"username" : "BOT SUPORTE",
 				"title" : "Warning",
 				"channel" : "testbotzendesk",
 				"attachments": [
 					{
+						"token" : "xoxp-2465752868-87168214994-127188328743-d5591c799a0db4da58d3bbc631fd3367",
 						"fallback": "New ticket from Andrea Lee - Ticket #1943: Can't rest my password - https://groove.hq/path/to/ticket/1943",
 						"pretext": name,
-						
-						#"title": "Ticket #{0}: {1}".format('z',ticket['subject'].encode('utf-8')),
+						"title": "Ticket #{0} : {1}".format(ticket['id'],subject),
 						"title_link": "https://pagarme.zendesk.com/agent/tickets/{0}".format(ticket['id']),
-						"text": "Help! I tried to reset my password but nothing happened!",
+						"text": "{0}".format(description),
 						"color": "#7CD197",
-						'title' : x,
+						"icon_emoji": ":monkey_face:",
+						"callback_id" : "https://requestb.in/1mxoztj1",
+						"actions": [
+                		{
+                    		"name": "chess",
+                    		"text": "Aceitar",
+                    		"type": "button",
+                    		"value": "chess"
+                		},
+                		{
+                    		"name": "chess",
+                    		"text": "Atendimento",
+                    		"type": "button",
+                    		"value": "chess"                	
+                		}	
+					]
+						
 					}
 				]
 
 			}
-			##print dic
-			queryString  = urllib.urlencode(dic)
 
-			print queryString
+			x = urllib.urlencode(dic)
+			print x
 
-			requests.post("https://slack.com/api/chat.postMessage?{0}".format(queryString))
+			requests.post("https://hooks.slack.com/services/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",json = dic)
 
 	file.close()
-
-	##if not newTickets == 0:
-	##message = "<!here> Tem {0} ticket(s) novo(s) na fila".format(newTickets)
-
-
-
-##else:
-	##message = "<!here> Nao tem nenhum ticket novo"
-	##requests.post("https://slack.com/api/chat.postMessage?token=xoxp-2465752868-87168214994-124135080481-9c2f8f0ce5fa52664403fe521dcb4e97&channel=testbotzendesk&text={0}".format(message))
-	##os.remove('newfile.txt')
-	##open("newfile.txt","w").close()
 
 
