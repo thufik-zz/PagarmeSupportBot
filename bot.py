@@ -13,7 +13,7 @@ count = jsonReturned['count']
 if count > 0:
 
 	tickets = jsonReturned['tickets']
-	file = open("newfile.txt","r+b") 
+	file = open("newfile.txt","ab+") 
 	readedFile = file.read()
 	newTickets = 0
 
