@@ -5,34 +5,26 @@ def remove_accents(input_str):
     only_ascii = nfkd_form.encode("ASCII", "ignore")
     return only_ascii.decode("UTF-8").encode("UTF-8")
 
+response = requests.get('https://pagarme.zendesk.com/api/v2/views/39073217/tickets.json',auth=('fellipe.thufik@pagar.me','thufik19'))
 
-
-r = requests.get('https://pagarme.zendesk.com/api/v2/views/39073217/tickets.json',auth=('fellipe.thufik@pagar.me','thufik19'))
-
-jayson = json.loads(r.text)
-count = jayson['count']
-
-
+jsonReturned = json.loads(response.text)
+count = jsonReturned['count']
 
 if count > 0:
 
-	tickets = jayson['tickets']
-	file = open("newfile.txt","ab+") 
+	tickets = jsonReturned['tickets']
+	file = open("newfile.txt","r+b") 
 	readedFile = file.read()
-	newTickets = 03
+	newTickets = 0
 
 	for ticket in tickets:
 		if  not str(ticket['id']) in readedFile:
 			
 			subject =  remove_accents(ticket['subject'])
 			description = remove_accents(ticket['description'])
+			name = '<!here> New ticket on queue'
 
 			file.write(str(ticket['id']) + ' ')
-			#if ticket.get('via').get('source').get('from'):
-			#	name = '<!here> New Ticket from {0}'.format(ticket['via']['source']['from']['name']) 
-			#else:
-			#
-			name = '<!here> New ticket on queue'
 
 			dic = {
 				"username" : "BOT SUPORTE",
@@ -68,9 +60,6 @@ if count > 0:
 				]
 
 			}
-
-			x = urllib.urlencode(dic)
-			print x
 
 			##requests.post("https://hooks.slack.com/services/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",json = dic)
 			requests.post("https://hooks.slack.com/services/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",json = dic)
