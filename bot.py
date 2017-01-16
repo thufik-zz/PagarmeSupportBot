@@ -7,7 +7,7 @@ def remove_accents(input_str):
 
 
 
-r = requests.get('https://pagarme.zendesk.com/api/v2/views/39073247/tickets.json',auth=('fellipe.thufik@pagar.me','thufik19'))
+r = requests.get('https://pagarme.zendesk.com/api/v2/views/39073217/tickets.json',auth=('fellipe.thufik@pagar.me','thufik19'))
 
 jayson = json.loads(r.text)
 count = jayson['count']
@@ -17,9 +17,9 @@ count = jayson['count']
 if count > 0:
 
 	tickets = jayson['tickets']
-	file = open("newfile.txt","r+b") 
+	file = open("newfile.txt","ab+") 
 	readedFile = file.read()
-	newTickets = 0
+	newTickets = 03
 
 	for ticket in tickets:
 		if  not str(ticket['id']) in readedFile:
@@ -36,31 +36,31 @@ if count > 0:
 
 			dic = {
 				"username" : "BOT SUPORTE",
-				"title" : "Warning",
-				"channel" : "testbotzendesk",
 				"attachments": [
 					{
 						"token" : "xoxp-2465752868-87168214994-127188328743-d5591c799a0db4da58d3bbc631fd3367",
-						"fallback": "New ticket from Andrea Lee - Ticket #1943: Can't rest my password - https://groove.hq/path/to/ticket/1943",
+						"fallback": "Novo ticket na fila",
 						"pretext": name,
 						"title": "Ticket #{0} : {1}".format(ticket['id'],subject),
 						"title_link": "https://pagarme.zendesk.com/agent/tickets/{0}".format(ticket['id']),
 						"text": "{0}".format(description),
 						"color": "#7CD197",
 						"icon_emoji": ":monkey_face:",
-						"callback_id" : "https://requestb.in/1mxoztj1",
+						"callback_id" : "{0}".format(ticket['id']),
 						"actions": [
                 		{
-                    		"name": "chess",
+                    		"name": "btnAceitar",
                     		"text": "Aceitar",
+                    		"style" : "primary",
                     		"type": "button",
-                    		"value": "chess"
+                    		"value": "1"
                 		},
                 		{
-                    		"name": "chess",
+                    		"name": "btnAtendimento",
                     		"text": "Atendimento",
+                    		"style" : "primary",
                     		"type": "button",
-                    		"value": "chess"                	
+                    		"value": "2"                	
                 		}	
 					]
 						
@@ -72,8 +72,12 @@ if count > 0:
 			x = urllib.urlencode(dic)
 			print x
 
-			requests.post("https://hooks.slack.com/services/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",json = dic)
-
+			##requests.post("https://hooks.slack.com/services/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",json = dic)
+			requests.post("https://hooks.slack.com/services/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",json = dic)
+			
 	file.close()
+
+
+
 
 
