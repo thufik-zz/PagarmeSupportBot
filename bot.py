@@ -1,11 +1,17 @@
-import requests,json,time,os,urllib,unicodedata
+import requests,json,time,os,urllib,unicodedata,xml.etree.ElementTree as ET
 
 def remove_accents(input_str):
     nfkd_form = unicodedata.normalize("NFKD", input_str)
     only_ascii = nfkd_form.encode("ASCII", "ignore")
     return only_ascii.decode("UTF-8").encode("UTF-8")
 
-response = requests.get('https://pagarme.zendesk.com/api/v2/views/39073217/tickets.json',auth=('fellipe.thufik@pagar.me','thufik19'))
+
+configs = ET.parse('config.xml')
+username = configs.find('username').text
+password = configs.find('password').text
+
+response = requests.get('https://pagarme.zendesk.com/api/v2/views/39073217/tickets.json',auth=(username,password))
+
 
 jsonReturned = json.loads(response.text)
 count = jsonReturned['count']
@@ -61,8 +67,8 @@ if count > 0:
 
 			}
 
-			##requests.post("https://hooks.slack.com/services/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",json = dic)
-			requests.post("https://hooks.slack.com/services/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",json = dic)
+			requests.post("https://hooks.slack.com/services/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",json = dic)
+			##requests.post("https://hooks.slack.com/services/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",json = dic)
 			
 	file.close()
 
