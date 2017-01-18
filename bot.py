@@ -67,7 +67,7 @@ if count > 0:
 
 			}
 
-			requests.post("https://hooks.slack.com/services/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",json = dic)
+			requests.post("https://hooks.slack.com/services/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",json = dic)
 			##requests.post("https://hooks.slack.com/services/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",json = dic)
 			
 	file.close()
