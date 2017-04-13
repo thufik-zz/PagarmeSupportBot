@@ -45,6 +45,13 @@ def send_message_slack(agent):
             		"style" : "primary",
             		"type": "button",
             		"value": "3"                	
+    			},
+    			{
+            		"name": "btnAtendimento",
+            		"text": "Enviar para atendimento",
+            		"style" : "primary",
+            		"type": "button",
+            		"value": "4"  
     			}
 				]		
 			}
