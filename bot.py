@@ -101,7 +101,6 @@ if count > 0:
 	for ticket in tickets:
 		if  not str(ticket['id']) in readedFile:
 
-			##Escreve o id do ticket novo no arquivo
 			file.write(str(ticket['id']) + ' ')
 
 			agent = min(dictionaryTickets.iteritems(), key=operator.itemgetter(1))[0]
@@ -132,7 +131,6 @@ if count > 0:
 				parametros = {'ticket': {'assignee_id' : '3473352046','status' : 'open'}}
 
 				requests.put('https://pagarme.zendesk.com/api/v2/tickets/'+ str(ticket['id']) + '.json',auth=(username,password),json=parametros)
-				##manda mensagem no slack
 
 			send_message_slack(agent)
 			
