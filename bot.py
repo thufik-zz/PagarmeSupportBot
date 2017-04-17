@@ -78,7 +78,7 @@ ticketsThufik = requests.get('https://pagarme.zendesk.com/api/v2/views/56987786/
 
 jsonReturned = json.loads(response.text)
 jsonMessina = json.loads(ticketsMessina.text)
-jsonJack = json.loads(ticketsMessina.text)
+jsonJack = json.loads(ticketsJack.text)
 jsonThufik = json.loads(ticketsThufik.text)
 
 
